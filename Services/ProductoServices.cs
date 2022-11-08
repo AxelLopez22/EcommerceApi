@@ -54,11 +54,37 @@ namespace Services
             }
         }
 
-        public async Task<IQueryable<ProductoDTO>> GetProducts()
+        public async Task<ProductoDTO> GetIdProduct(int id)
         {
             try
             {
-                var result = await _context.Productos.Where(x => x.Estado == true)
+                var result = await _context.Productos.Where(x => x.IdProductos == id && x.Estado == true)
+                    .Select(s => new ProductoDTO(){
+                        IdProductos = s.IdProductos,
+                        NombreProducto = s.NombreProducto,
+                        Descripcion = s.Descripcion,
+                        Stock = s.Stock,
+                        ImagenUrl = s.ImagenUrl,
+                        IdCategoria = s.IdCategoria,
+                        NombreCategoria = s.IdCategoriaNavigation.Nombre
+                    }).FirstOrDefaultAsync();
+                if(result == null)
+                {
+                    return null;
+                }
+                return result;
+            } catch 
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<ProductoDTO>> GetProducts()
+        {
+            try
+            {
+                List<ProductoDTO> producto = new List<ProductoDTO>();
+                producto = await _context.Productos.Where(x => x.Estado == true)
                     .Select(s => new ProductoDTO(){
                         IdProductos = s.IdProductos,
                         NombreProducto = s.NombreProducto,
@@ -68,11 +94,11 @@ namespace Services
                         IdCategoria = s.IdCategoria,
                         NombreCategoria = s.IdCategoriaNavigation.Nombre
                     }).ToListAsync();
-                if(result.Count == 0)
+                if(producto.Count == 0)
                 {
                     return null;
                 }
-                return (IQueryable<ProductoDTO>)result;
+                return producto;
             } catch 
             {
                 return null;
@@ -108,6 +134,27 @@ namespace Services
             }
         }
 
+        public async Task<bool> DeleteProducto(int id)
+        {
+            try
+            {
+                var existe = await _context.Productos.Where(x => x.IdProductos == id && x.Estado == true)
+                    .FirstOrDefaultAsync();
+                
+                if(existe == null)
+                {
+                    return false;
+                }
+                existe.Estado = false;
+                _context.Productos.Update(existe);
+                await _context.SaveChangesAsync();
+                return true;
+            } catch 
+            {
+                return false;
+            }
+        }
+
 //#########################################################################################//
         private async Task<string> GuardarArchivo(byte[] contenido, string extension, string contenedor, string contentType)
         {
@@ -126,26 +173,26 @@ namespace Services
             return UrlParaDb;
         }
 
-        // public Task BorrarArchivo(string ruta, string contenedor)
-        // {
-        //     if(ruta != null)
-        //     {
-        //         var nombreArchivo = Path.GetFileName(ruta);
-        //         string directorioArchivo = Path.Combine(_env.WebRootPath, contenedor, nombreArchivo);
+        private Task BorrarArchivo(string ruta, string contenedor)
+        {
+            if(ruta != null)
+            {
+                var nombreArchivo = Path.GetFileName(ruta);
+                string directorioArchivo = Path.Combine(_env.WebRootPath, contenedor, nombreArchivo);
 
-        //         if(File.Exists(directorioArchivo))
-        //         {
-        //             File.Delete(directorioArchivo);
-        //         }
+                if(File.Exists(directorioArchivo))
+                {
+                    File.Delete(directorioArchivo);
+                }
+            }
+            return Task.FromResult(0);
+        }
 
-        //         return Task.FromResult(0);
-        //     }
-        // }
-
-        // private async Task<string> EditarArchivo(byte[] contenido, string extension, string contenedor
-        //     , string ruta, string contentType)
-        // {
-        //     await 
-        // }
+        private async Task<string> EditarArchivo(byte[] contenido, string extension, string contenedor
+            , string ruta, string contentType)
+        {
+            await BorrarArchivo(ruta, contenedor);
+            return await GuardarArchivo(contenido, extension, contenedor, contentType);
+        }
     }
 }

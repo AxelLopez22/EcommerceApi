@@ -29,7 +29,6 @@ namespace ecommerceApi.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=LAPTOP-BMJ3PPCK;Database=Ecommerce;Trusted_Connection=true");
             }
         }
 

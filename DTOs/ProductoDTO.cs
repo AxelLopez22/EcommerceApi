@@ -19,8 +19,7 @@ namespace DTOs
         [Required]
         public string NombreProducto { get; set; } = null!;
         [Required]
-        public string Descripcion { get; set; } = null!;
-        [Required]    
+        public string Descripcion { get; set; } = null!; 
         [PesoImagenValidacion(PesoMaximo:4)]
         [TipoArchivoValidacion(grupoTipoArchivos: GrupoTipoArchivos.Imagen)]
         public IFormFile? Foto {get; set;}
