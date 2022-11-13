@@ -18,6 +18,7 @@ namespace ecommerceApi.Models
         public string? ImagenUrl { get; set; }
         public bool? Estado { get; set; }
         public int? IdCategoria { get; set; }
+        public double? Precio { get; set; }
 
         public virtual Categorium? IdCategoriaNavigation { get; set; }
         public virtual ICollection<DetalleCompra> DetalleCompras { get; set; }

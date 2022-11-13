@@ -30,6 +30,7 @@ namespace Services
                 producto.NombreProducto = model.NombreProducto;
                 producto.Descripcion = model.Descripcion;
                 producto.IdCategoria = model.IdCategoria;
+                producto.Precio = model.Precio;
                 producto.Stock = 0;
                 producto.Estado = true;
 
@@ -64,6 +65,7 @@ namespace Services
                         NombreProducto = s.NombreProducto,
                         Descripcion = s.Descripcion,
                         Stock = s.Stock,
+                        Precio = s.Precio,
                         ImagenUrl = s.ImagenUrl,
                         IdCategoria = s.IdCategoria,
                         NombreCategoria = s.IdCategoriaNavigation.Nombre
@@ -90,10 +92,12 @@ namespace Services
                         NombreProducto = s.NombreProducto,
                         Descripcion = s.Descripcion,
                         Stock = s.Stock,
+                        Precio = s.Precio,
                         ImagenUrl = s.ImagenUrl,
                         IdCategoria = s.IdCategoria,
                         NombreCategoria = s.IdCategoriaNavigation.Nombre
                     }).ToListAsync();
+                
                 if(producto.Count == 0)
                 {
                     return null;

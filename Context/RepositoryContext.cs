@@ -21,6 +21,7 @@ namespace ecommerceApi.Context
         public virtual DbSet<Compra> Compras { get; set; } = null!;
         public virtual DbSet<DetalleCompra> DetalleCompras { get; set; } = null!;
         public virtual DbSet<DetalleVentum> DetalleVenta { get; set; } = null!;
+        public virtual DbSet<Inventario> Inventarios { get; set; } = null!;
         public virtual DbSet<Producto> Productos { get; set; } = null!;
         public virtual DbSet<Proveedore> Proveedores { get; set; } = null!;
         public virtual DbSet<Ventum> Venta { get; set; } = null!;
@@ -29,6 +30,8 @@ namespace ecommerceApi.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=LAPTOP-BMJ3PPCK;Database=Ecommerce;Trusted_Connection=true");
             }
         }
 
@@ -89,6 +92,29 @@ namespace ecommerceApi.Context
                     .WithMany(p => p.DetalleVenta)
                     .HasForeignKey(d => d.IdVenta)
                     .HasConstraintName("Fk_DetalleVenta_Refe_Venta");
+            });
+
+            modelBuilder.Entity<Inventario>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("Inventario");
+
+                entity.Property(e => e.Categoria)
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Descripcion)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ImagenUrl)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NombreProducto)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Producto>(entity =>

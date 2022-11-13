@@ -11,6 +11,8 @@ namespace DTOs
             CreateMap<Categorium, CreateCategoriaDTO>().ReverseMap();
             CreateMap<CreateProductoDTO, Producto>()
                 .ForMember(x => x.ImagenUrl, options => options.Ignore());
+            CreateMap<Proveedore,ProveedoresDTO>().ReverseMap();
+            CreateMap<Proveedore,AgregarProveedoresDTO>().ReverseMap();
         }
     }
 }
