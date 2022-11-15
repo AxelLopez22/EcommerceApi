@@ -13,6 +13,7 @@ namespace DTOs
                 .ForMember(x => x.ImagenUrl, options => options.Ignore());
             CreateMap<Proveedore,ProveedoresDTO>().ReverseMap();
             CreateMap<Proveedore,AgregarProveedoresDTO>().ReverseMap();
+            CreateMap<Compra, ComprasDTO>().ReverseMap();
         }
     }
 }
