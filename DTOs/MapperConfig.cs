@@ -14,6 +14,7 @@ namespace DTOs
             CreateMap<Proveedore,ProveedoresDTO>().ReverseMap();
             CreateMap<Proveedore,AgregarProveedoresDTO>().ReverseMap();
             CreateMap<Compra, ComprasDTO>().ReverseMap();
+            CreateMap<Ventum, VentasDTO>().ReverseMap();
         }
     }
 }

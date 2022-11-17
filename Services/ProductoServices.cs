@@ -31,6 +31,10 @@ namespace Services
                 producto.Descripcion = model.Descripcion;
                 producto.IdCategoria = model.IdCategoria;
                 producto.Precio = model.Precio;
+                if(model.IdCategoria == 2)
+                {
+                    producto.Stock = null;
+                }
                 producto.Stock = 0;
                 producto.Estado = true;
 
