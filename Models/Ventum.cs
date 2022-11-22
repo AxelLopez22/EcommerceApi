@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
 namespace ecommerceApi.Models
 {
@@ -14,8 +15,8 @@ namespace ecommerceApi.Models
         public DateTime? FechaVenta { get; set; }
         public double? Total { get; set; }
         public bool? Estado { get; set; }
-        public int? IdUsuario { get; set; }
-
+        public string IdUsuario { get; set; }
+        public IdentityUser Usuario {get; set;}
         public virtual ICollection<DetalleVentum> DetalleVenta { get; set; }
     }
 }

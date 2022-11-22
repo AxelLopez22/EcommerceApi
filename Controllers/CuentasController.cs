@@ -46,7 +46,7 @@ namespace Controllers
                 _logger.LogError("Error al iniciar sesion");
                 res.status = "Error";
                 res.data = "Ocurrio un error al iniciar sesión";
-                return BadRequest(res);
+                return BadRequest(result);
             }
             res.status = "Ok";
             res.data = result;

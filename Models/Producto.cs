@@ -12,15 +12,15 @@ namespace ecommerceApi.Models
         }
 
         public int IdProductos { get; set; }
-        public string NombreProducto { get; set; } = null!;
-        public string Descripcion { get; set; } = null!;
+        public string NombreProducto { get; set; }
+        public string Descripcion { get; set; }
         public int? Stock { get; set; }
-        public string? ImagenUrl { get; set; }
+        public string ImagenUrl { get; set; }
         public bool? Estado { get; set; }
         public int? IdCategoria { get; set; }
         public double? Precio { get; set; }
 
-        public virtual Categorium? IdCategoriaNavigation { get; set; }
+        public virtual Categorium IdCategoriaNavigation { get; set; }
         public virtual ICollection<DetalleCompra> DetalleCompras { get; set; }
         public virtual ICollection<DetalleVentum> DetalleVenta { get; set; }
     }

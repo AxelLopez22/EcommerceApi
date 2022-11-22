@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ecommerceApi.Context;
 
@@ -11,9 +12,10 @@ using ecommerceApi.Context;
 namespace ecommerceApi.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20221122033437_UpdateSistemaUser")]
+    partial class UpdateSistemaUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -288,13 +290,8 @@ namespace ecommerceApi.Migrations
                     b.Property<double?>("Total")
                         .HasColumnType("float");
 
-                    b.Property<string>("UsuarioId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("IdVenta")
                         .HasName("PK__Venta__BC1240BDC7C4C99C");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Venta");
                 });
@@ -555,15 +552,6 @@ namespace ecommerceApi.Migrations
                         .HasConstraintName("Fk_Productos_Refe_Categoria");
 
                     b.Navigation("IdCategoriaNavigation");
-                });
-
-            modelBuilder.Entity("ecommerceApi.Models.Ventum", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

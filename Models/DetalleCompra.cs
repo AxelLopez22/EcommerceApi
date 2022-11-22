@@ -11,7 +11,7 @@ namespace ecommerceApi.Models
         public int? IdCompra { get; set; }
         public int? IdProducto { get; set; }
 
-        public virtual Compra? IdCompraNavigation { get; set; }
-        public virtual Producto? IdProductoNavigation { get; set; }
+        public virtual Compra IdCompraNavigation { get; set; }
+        public virtual Producto IdProductoNavigation { get; set; }
     }
 }

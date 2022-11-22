@@ -23,7 +23,7 @@ namespace Services
             try
             {
                 Ventum venta = new Ventum();
-                venta.IdUsuario = model.IdUsuario;
+                //venta.IdUsuario = model.IdUsuario;
                 venta.FechaVenta = DateTime.Now;
                 venta.Estado = true;
                 venta.Total = model.Detalle.Sum(x => x.Precio * x.Cantidad);

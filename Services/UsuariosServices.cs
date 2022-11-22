@@ -35,7 +35,7 @@ namespace Services
 
                 if(resultado.Succeeded)
                 {
-                    return ConstruirToken(model.Email);
+                    return ConstruirToken(model.NameUser);
                 } else {
                     return (RespuestaAutenticacion)resultado.Errors;
                 }
@@ -51,11 +51,11 @@ namespace Services
             try
             {
                 var resultado = await _signIngManager
-                    .PasswordSignInAsync(model.Email,model.Password,isPersistent:false,lockoutOnFailure:false);
+                    .PasswordSignInAsync(model.NameUser,model.Password,isPersistent:false,lockoutOnFailure:false);
                 
                 if(resultado.Succeeded)
                 {
-                    return ConstruirToken(model.Email);
+                    return ConstruirToken(model.NameUser);
                 }
                 else
                 {
@@ -68,11 +68,11 @@ namespace Services
             }
         }
 
-        private RespuestaAutenticacion ConstruirToken(string email)
+        private RespuestaAutenticacion ConstruirToken(string UserName)
         {
             var Claims = new List<Claim>()
             {
-                new Claim("email", email)
+                new Claim("Usuario", UserName)
             };
 
             var llave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["LlaveJwt"]));

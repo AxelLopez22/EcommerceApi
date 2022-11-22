@@ -24,7 +24,7 @@ namespace Services
             {
                 Compra compra = new Compra();
                 compra.IdProveedor = model.IdProveedor;
-                compra.IdUsuario = model.IdUsuario;
+                //compra.IdUsuario = model.IdUsuario;
                 compra.Estado = true;
                 compra.FechaCompra = DateTime.Now;
                 compra.Total = model.Detalle.Sum(x => x.Precio * x.Cantidad);

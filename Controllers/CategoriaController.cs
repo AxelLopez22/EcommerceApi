@@ -1,6 +1,8 @@
 using AutoMapper;
 using DTOs;
 using ecommerceApi.Context;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -20,6 +22,7 @@ namespace Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetCategorias()
         {
             ModelRequest res = new ModelRequest();

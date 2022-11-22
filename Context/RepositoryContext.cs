@@ -18,32 +18,35 @@ namespace ecommerceApi.Context
         {
         }
 
-        public virtual DbSet<Categorium> Categoria { get; set; } = null!;
-        public virtual DbSet<Compra> Compras { get; set; } = null!;
-        public virtual DbSet<DetalleCompra> DetalleCompras { get; set; } = null!;
-        public virtual DbSet<DetalleVentum> DetalleVenta { get; set; } = null!;
-        public virtual DbSet<Inventario> Inventarios { get; set; } = null!;
-        public virtual DbSet<Producto> Productos { get; set; } = null!;
-        public virtual DbSet<Proveedore> Proveedores { get; set; } = null!;
-        public virtual DbSet<Ventum> Venta { get; set; } = null!;
+        public virtual DbSet<Categorium> Categoria { get; set; }
+        public virtual DbSet<Compra> Compras { get; set; }
+        public virtual DbSet<DetalleCompra> DetalleCompras { get; set; }
+        public virtual DbSet<DetalleVentum> DetalleVenta { get; set; }
+        public virtual DbSet<Inventario> Inventarios { get; set; }
+        public virtual DbSet<Producto> Productos { get; set; }
+        public virtual DbSet<Proveedore> Proveedores { get; set; }
+        public virtual DbSet<Ventum> Venta { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
+                //optionsBuilder.UseSqlServer("Server=LAPTOP-BMJ3PPCK;Database=Ecommerce;Trusted_Connection=true");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
+
+           
             modelBuilder.Entity<Categorium>(entity =>
             {
                 entity.HasKey(e => e.IdCategoria)
                     .HasName("PK__Categori__A3C02A105C8931F9");
 
                 entity.Property(e => e.Nombre)
+                    .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false);
             });
@@ -55,10 +58,13 @@ namespace ecommerceApi.Context
 
                 entity.Property(e => e.FechaCompra).HasColumnType("datetime");
 
+                entity.Property(e => e.IdUsuario).HasMaxLength(450);
+
                 entity.HasOne(d => d.IdProveedorNavigation)
                     .WithMany(p => p.Compras)
                     .HasForeignKey(d => d.IdProveedor)
                     .HasConstraintName("Fk_Compras_Refe_Proveedor");
+
             });
 
             modelBuilder.Entity<DetalleCompra>(entity =>
@@ -102,10 +108,12 @@ namespace ecommerceApi.Context
                 entity.ToView("Inventario");
 
                 entity.Property(e => e.Categoria)
+                    .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Descripcion)
+                    .IsRequired()
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
@@ -114,6 +122,7 @@ namespace ecommerceApi.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.NombreProducto)
+                    .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
             });
@@ -124,6 +133,7 @@ namespace ecommerceApi.Context
                     .HasName("PK__Producto__718C7D07D8BDFBFD");
 
                 entity.Property(e => e.Descripcion)
+                    .IsRequired()
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
@@ -132,6 +142,7 @@ namespace ecommerceApi.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.NombreProducto)
+                    .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
@@ -147,14 +158,17 @@ namespace ecommerceApi.Context
                     .HasName("PK__Proveedo__E8B631AF3409476C");
 
                 entity.Property(e => e.Email)
+                    .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Nombre)
+                    .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.RazonSocial)
+                    .IsRequired()
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
@@ -169,6 +183,9 @@ namespace ecommerceApi.Context
                     .HasName("PK__Venta__BC1240BDC7C4C99C");
 
                 entity.Property(e => e.FechaVenta).HasColumnType("datetime");
+
+                entity.Property(e => e.IdUsuario).HasMaxLength(450);
+
             });
 
             OnModelCreatingPartial(modelBuilder);
