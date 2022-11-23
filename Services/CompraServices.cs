@@ -17,14 +17,14 @@ namespace Services
             _mapper = mapper;
         }   
 
-        public async Task<ComprasDTO> CrearCompra(ComprasDTO model)
+        public async Task<ComprasDTO> CrearCompra(string IdUsuario, ComprasDTO model)
         {
             var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
                 Compra compra = new Compra();
                 compra.IdProveedor = model.IdProveedor;
-                //compra.IdUsuario = model.IdUsuario;
+                compra.UsuarioId = IdUsuario;
                 compra.Estado = true;
                 compra.FechaCompra = DateTime.Now;
                 compra.Total = model.Detalle.Sum(x => x.Precio * x.Cantidad);

@@ -3,6 +3,7 @@ using DTOs;
 using ecommerceApi.Context;
 using ecommerceApi.Models;
 using Microsoft.EntityFrameworkCore;
+using Common.Extensions;
 
 namespace Services
 {
@@ -17,17 +18,17 @@ namespace Services
             _mapper = mapper;
         }
 
-        public async Task<VentasDTO> CrearVenta(VentasDTO model)
+        public async Task<VentasDTO> CrearVenta(string IdUsuario, VentasDTO model)
         {
             var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
                 Ventum venta = new Ventum();
-                //venta.IdUsuario = model.IdUsuario;
+                venta.UsuarioId = IdUsuario;
                 venta.FechaVenta = DateTime.Now;
                 venta.Estado = true;
                 venta.Total = model.Detalle.Sum(x => x.Precio * x.Cantidad);
-                await _context.Venta.AddAsync(venta);
+                _context.Venta.Add(venta);
                 await _context.SaveChangesAsync();
 
                 foreach(var item in model.Detalle)

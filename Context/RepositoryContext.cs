@@ -58,7 +58,7 @@ namespace ecommerceApi.Context
 
                 entity.Property(e => e.FechaCompra).HasColumnType("datetime");
 
-                entity.Property(e => e.IdUsuario).HasMaxLength(450);
+                entity.Property(e => e.UsuarioId).HasMaxLength(450);
 
                 entity.HasOne(d => d.IdProveedorNavigation)
                     .WithMany(p => p.Compras)
@@ -184,7 +184,7 @@ namespace ecommerceApi.Context
 
                 entity.Property(e => e.FechaVenta).HasColumnType("datetime");
 
-                entity.Property(e => e.IdUsuario).HasMaxLength(450);
+                entity.Property(e => e.UsuarioId).HasMaxLength(450);
 
             });
 

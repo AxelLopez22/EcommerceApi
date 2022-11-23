@@ -1,6 +1,10 @@
 using AutoMapper;
+using Common.Extensions;
 using DTOs;
 using ecommerceApi.Context;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -12,18 +16,27 @@ namespace Controllers
     {
         private readonly ILogger<VentaController> _logger;
         private readonly VentaServices _services;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public VentaController(RepositoryContext context, IMapper mapper, ILogger<VentaController> logger)
+        public VentaController(RepositoryContext context, IMapper mapper, ILogger<VentaController> logger,
+        UserManager<IdentityUser> userManager)
         {
             _services = new VentaServices(context, mapper);
             _logger = logger;
+            _userManager = userManager;
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> CrearVenta(VentasDTO model)
         {
+            var Userclaim = HttpContext.User.Claims.Where(claim => claim.Type == "Usuario").FirstOrDefault();
+            var user = Userclaim.Value;
+            var Usuario = await _userManager.FindByNameAsync(user);
+            var IdUsuario = Usuario.Id;
+
             ModelRequest res = new ModelRequest();
-            var result = await _services.CrearVenta(model);
+            var result = await _services.CrearVenta(IdUsuario, model);
             if(result == null)
             {
                 _logger.LogError("Ocurrio un error al procesar la compra");

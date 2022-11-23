@@ -2,7 +2,6 @@ namespace DTOs
 {
     public class VentasDTO
     {
-        public int IdUsuario {get; set;}
         public List<DetalleVentasDTO> Detalle {get; set;}
 
         public VentasDTO()

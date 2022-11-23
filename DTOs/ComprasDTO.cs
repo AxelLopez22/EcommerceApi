@@ -5,8 +5,6 @@ namespace DTOs
     public class ComprasDTO
     {
         [Required]
-        public int? IdUsuario { get; set; }
-        [Required]
         public int? IdProveedor { get; set; }
         [Required]
         public List<DetalleCompraDTO> Detalle {get; set;}

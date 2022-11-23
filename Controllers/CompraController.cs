@@ -1,6 +1,9 @@
 using AutoMapper;
 using DTOs;
 using ecommerceApi.Context;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -12,16 +15,25 @@ namespace Controllers
     {
         private readonly ILogger<CompraController> _logger;
         private readonly CompraServices _services;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public CompraController(RepositoryContext context, IMapper mapper, ILogger<CompraController> logger)
+        public CompraController(RepositoryContext context, IMapper mapper, ILogger<CompraController> logger,
+        UserManager<IdentityUser> userManager)
         {
             _services = new CompraServices(context, mapper);
-            _logger = logger;    
+            _logger = logger;
+            _userManager = userManager;
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> AddCompra(ComprasDTO model)
         {
+            var Userclaim = HttpContext.User.Claims.Where(claim => claim.Type == "Usuario").FirstOrDefault();
+            var user = Userclaim.Value;
+            var Usuario = await _userManager.FindByNameAsync(user);
+            var IdUsuario = Usuario.Id;
+
             ModelRequest res = new ModelRequest();
             if(model == null && !ModelState.IsValid)
             {
@@ -30,9 +42,7 @@ namespace Controllers
                 res.data = "El modelo de compra es invalido";
                 return BadRequest(res);
             }
-
-            var result = await _services.CrearCompra(model);
-
+            var result = await _services.CrearCompra(IdUsuario ,model);
             if(result == null)
             {
                 _logger.LogError("Ha ocurrido un error al procesar la venta");
