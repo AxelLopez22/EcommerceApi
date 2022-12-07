@@ -47,6 +47,12 @@ IMapper mapper = mapperConfigure.CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddCors(options =>
+    options.AddPolicy("AllowApp",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()));
+
 
 builder.Services.AddSwaggerGen(c => 
 {
@@ -84,6 +90,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors("AllowApp");
 
 app.UseHttpsRedirection();
 
