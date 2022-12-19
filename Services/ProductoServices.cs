@@ -85,6 +85,36 @@ namespace Services
             }
         }
 
+        public async Task<List<ProductoDTO>> GetProductsCategories(int IdCategoria, int Cantidad)
+        {
+            try
+            {
+                List<ProductoDTO> producto = new List<ProductoDTO>();
+                producto = await _context.Productos.Where(x => x.Estado == true && x.IdCategoria == IdCategoria)
+                    .Select(s => new ProductoDTO()
+                    {
+                        IdProductos = s.IdProductos,
+                        NombreProducto = s.NombreProducto,
+                        Descripcion = s.Descripcion,
+                        Stock = s.Stock,
+                        Precio = s.Precio,
+                        ImagenUrl = s.ImagenUrl,
+                        IdCategoria = s.IdCategoria,
+                        NombreCategoria = s.IdCategoriaNavigation.Nombre
+                    }).Take(Cantidad).ToListAsync();
+
+                if (producto.Count == 0)
+                {
+                    return null;
+                }
+                return producto;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public async Task<List<ProductoDTO>> GetProducts()
         {
             try

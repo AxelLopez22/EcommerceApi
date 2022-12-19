@@ -23,7 +23,7 @@ namespace Controllers
         }
 
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetProducts()
         {
             ModelRequest res = new ModelRequest();
@@ -33,6 +33,23 @@ namespace Controllers
                 _logger.LogError("No hay productos para mostrar");
                 res.status = "Error";
                 res.data = "No hay productos para mostrar";
+                return BadRequest(res);
+            }
+            res.status = "Ok";
+            res.data = result;
+            return Ok(res);
+        }
+
+        [HttpGet("obtenerProductos")]
+        public async Task<IActionResult> GetProductCategories(int idCategoria, int Cantidad)
+        {
+            ModelRequest res = new ModelRequest();
+            var result = await _services.GetProductsCategories(idCategoria, Cantidad);
+            if(result == null) 
+            {
+                _logger.LogError($"Ocurrio un error al mostrar los productos");
+                res.status = "Error";
+                res.data = "No hay productos de esta categoria";
                 return BadRequest(res);
             }
             res.status = "Ok";
@@ -75,7 +92,7 @@ namespace Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateProduct(int id, CreateProductoDTO model)
+        public async Task<IActionResult> UpdateProduct([FromQuery] int id,[FromQuery] CreateProductoDTO model)
         {
             ModelRequest res = new ModelRequest();
             var result = await _services.UpdateProducto(id, model);
