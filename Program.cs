@@ -17,7 +17,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<RepositoryContext>(options =>
+//builder.Services.AddDbContext<RepositoryContext>(options =>
+//{
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionDB"));
+//});
+builder.Services.AddDbContext<ContextDb>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionDB"));
 });
@@ -25,17 +29,19 @@ builder.Services.AddDbContext<RepositoryContext>(options =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters 
         {
-            ValidateIssuer = false,
-            ValidateAudience = false,
+            ValidateIssuer = true,
+            ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
+            ValidIssuer = "localhost",
+            ValidAudience = "localhost",
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["LlaveJwt"])),
                 ClockSkew = TimeSpan.Zero
         });
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<RepositoryContext>()
+    .AddEntityFrameworkStores<ContextDb>()
     .AddDefaultTokenProviders();
 
 //Configuracion de AutoMapper
@@ -47,11 +53,13 @@ IMapper mapper = mapperConfigure.CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddHttpContextAccessor();
 
+
 builder.Services.AddCors(options =>
     options.AddPolicy("AllowApp",
         builder => builder.AllowAnyOrigin()
                           .AllowAnyHeader()
-                          .AllowAnyMethod()));
+                          .AllowAnyMethod()
+                          .WithExposedHeaders(new string[] {"cantidadTotalRegistros"})));
 
 
 builder.Services.AddSwaggerGen(c => 

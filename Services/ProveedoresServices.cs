@@ -1,27 +1,35 @@
 using AutoMapper;
 using DTOs;
+using ecommerceApi.Common.Paginado;
 using ecommerceApi.Context;
+using ecommerceApi.DTOs;
 using ecommerceApi.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Services
 {
     public class ProveedoresServices
     {
-        private readonly RepositoryContext _context;
+        private readonly ContextDb _context;
         private readonly IMapper _mapper;
+        private readonly HttpContext _httpContext;
 
-        public ProveedoresServices(RepositoryContext context, IMapper mapper)
+        public ProveedoresServices(ContextDb context, IMapper mapper, HttpContext httpContext)
         {
             _context = context;
             _mapper = mapper;
+            _httpContext = httpContext;
         }
 
-        public async Task<List<ProveedoresDTO>> GetProveedores()
+        public async Task<List<ProveedoresDTO>> GetProveedores(PaginacionDTO paginacion)
         {
             try
             {
-                var result = await _context.Proveedores.Where(x => x.Estado == true).ToListAsync();
+                //var queryable = _context.Proveedores.AsQueryable();
+                //InsertarParametrosPaginacionEnCabecera(queryable);
+                var result = await _context.Proveedores.Where(x => x.Estado == true).OrderBy(x => x.Nombre).Paginar(paginacion).ToListAsync();
                 if(result.Count == 0)
                 {
                     return null;

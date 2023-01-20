@@ -1,4 +1,5 @@
 using AutoMapper;
+using ecommerceApi.DTOs;
 using ecommerceApi.Models;
 
 namespace DTOs
@@ -15,6 +16,10 @@ namespace DTOs
             CreateMap<Proveedore,AgregarProveedoresDTO>().ReverseMap();
             CreateMap<Compra, ComprasDTO>().ReverseMap();
             CreateMap<Ventum, VentasDTO>().ReverseMap();
+            CreateMap<MetodoDePago, MetodosPagosDTO>().ReverseMap();
+            CreateMap<Producto, ProductoDTO>()
+                .ForMember(x => x.NombreCategoria, options => options.Ignore());
+           // CreateMap<Producto, ProductoDTO>()
         }
     }
 }

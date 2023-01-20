@@ -1,7 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace DTOs
 {
     public class VentasDTO
     {
+        [Required]
+        public int IdMetodoPago { get; set; }
         public List<DetalleVentasDTO> Detalle {get; set;}
 
         public VentasDTO()

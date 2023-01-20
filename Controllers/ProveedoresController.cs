@@ -1,8 +1,10 @@
 using AutoMapper;
 using DTOs;
 using ecommerceApi.Context;
+using ecommerceApi.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Services;
+using Microsoft.AspNetCore.Http;
 
 namespace Controllers
 {
@@ -12,11 +14,11 @@ namespace Controllers
     {
         private readonly ILogger<ProveedoresController> _logger;
         private readonly ProveedoresServices _services;
-
-        public ProveedoresController(ILogger<ProveedoresController> logger, IMapper mapper, RepositoryContext context)
+    
+        public ProveedoresController(ILogger<ProveedoresController> logger, IMapper mapper, ContextDb context)
         {
             _logger = logger;
-            _services = new ProveedoresServices(context, mapper);
+            _services = new ProveedoresServices(context, mapper, HttpContext);
         }
 
         [HttpGet("{id:int}")]
@@ -37,10 +39,10 @@ namespace Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> GetAllAsync([FromQuery] PaginacionDTO paginacion)
         {
             ModelRequest res = new ModelRequest();
-            var result = await _services.GetProveedores();
+            var result = await _services.GetProveedores(paginacion);
             if(result == null)
             {
                 _logger.LogError("La lista esta vacia");

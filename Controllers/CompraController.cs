@@ -17,10 +17,10 @@ namespace Controllers
         private readonly CompraServices _services;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public CompraController(RepositoryContext context, IMapper mapper, ILogger<CompraController> logger,
-        UserManager<IdentityUser> userManager)
+        public CompraController(IMapper mapper, ILogger<CompraController> logger,
+        UserManager<IdentityUser> userManager, ContextDb contextDb)
         {
-            _services = new CompraServices(context, mapper);
+            _services = new CompraServices(mapper, contextDb);
             _logger = logger;
             _userManager = userManager;
         }
@@ -60,7 +60,7 @@ namespace Controllers
         {
             ModelRequest res = new ModelRequest();
             var result = await _services.AnularCompra(id);
-            if(result == null)
+            if(result == false)
             {
                 _logger.LogError("Ocurrio un error al anular compra");
                 res.status = "Error";

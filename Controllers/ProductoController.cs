@@ -15,7 +15,7 @@ namespace Controllers
         private readonly ProductoServices _services;
         private readonly ILogger<ProductoController> _logger;
 
-        public ProductoController(RepositoryContext context, IMapper mapper, IWebHostEnvironment env, IHttpContextAccessor http,
+        public ProductoController(ContextDb context, IMapper mapper, IWebHostEnvironment env, IHttpContextAccessor http,
             ILogger<ProductoController> logger)
         {
             _services = new ProductoServices(context, mapper, env, http);

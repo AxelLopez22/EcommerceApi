@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity;
 
 namespace ecommerceApi.Models
 {
@@ -17,8 +17,10 @@ namespace ecommerceApi.Models
         public bool? Estado { get; set; }
         public int? IdProveedor { get; set; }
         public string UsuarioId { get; set; }
-        public IdentityUser Usuario {get; set;}
+        public int? IdMetodoPago { get; set; }
 
+        public IdentityUser Usuario { get; set; }
+        public virtual MetodoDePago IdMetodoPagoNavigation { get; set; }
         public virtual Proveedore IdProveedorNavigation { get; set; }
         public virtual ICollection<DetalleCompra> DetalleCompras { get; set; }
     }

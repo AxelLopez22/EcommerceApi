@@ -8,15 +8,15 @@ namespace Services
 {
     public class ProductoServices
     {
-        private readonly RepositoryContext _context;
+        private readonly ContextDb _context;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _env;
         private readonly IHttpContextAccessor _http;
         private readonly string contenedor = "Images";
 
-        public ProductoServices(RepositoryContext context, IMapper mapper, IWebHostEnvironment env, IHttpContextAccessor http)
+        public ProductoServices(ContextDb context, IMapper mapper, IWebHostEnvironment env, IHttpContextAccessor http)
         {
-            _context = context;
+            _context= context;
             _mapper = mapper;
             _env = env;
             _http = http;

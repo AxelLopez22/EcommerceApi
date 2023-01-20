@@ -31,7 +31,6 @@ namespace ecommerceApi.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //optionsBuilder.UseSqlServer("Server=LAPTOP-BMJ3PPCK;Database=Ecommerce;Trusted_Connection=true");
             }
         }
 
@@ -49,56 +48,6 @@ namespace ecommerceApi.Context
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<Compra>(entity =>
-            {
-                entity.HasKey(e => e.IdCompra)
-                    .HasName("PK__Compras__0A5CDB5CE3AB252A");
-
-                entity.Property(e => e.FechaCompra).HasColumnType("datetime");
-
-                entity.Property(e => e.UsuarioId).HasMaxLength(450);
-
-                entity.HasOne(d => d.IdProveedorNavigation)
-                    .WithMany(p => p.Compras)
-                    .HasForeignKey(d => d.IdProveedor)
-                    .HasConstraintName("Fk_Compras_Refe_Proveedor");
-
-            });
-
-            modelBuilder.Entity<DetalleCompra>(entity =>
-            {
-                entity.HasKey(e => e.IdDetalle)
-                    .HasName("PK__DetalleC__E43646A53BE94F24");
-
-                entity.ToTable("DetalleCompra");
-
-                entity.HasOne(d => d.IdCompraNavigation)
-                    .WithMany(p => p.DetalleCompras)
-                    .HasForeignKey(d => d.IdCompra)
-                    .HasConstraintName("Fk_DetalleCompra_Refe_Compra");
-
-                entity.HasOne(d => d.IdProductoNavigation)
-                    .WithMany(p => p.DetalleCompras)
-                    .HasForeignKey(d => d.IdProducto)
-                    .HasConstraintName("Fk_DetalleCompra_Refe_Producto");
-            });
-
-            modelBuilder.Entity<DetalleVentum>(entity =>
-            {
-                entity.HasKey(e => e.IdDetalle)
-                    .HasName("PK__DetalleV__E43646A563B2D7C2");
-
-                entity.HasOne(d => d.IdProductoNavigation)
-                    .WithMany(p => p.DetalleVenta)
-                    .HasForeignKey(d => d.IdProducto)
-                    .HasConstraintName("Fk_DetalleVenta_Refe_Producto");
-
-                entity.HasOne(d => d.IdVentaNavigation)
-                    .WithMany(p => p.DetalleVenta)
-                    .HasForeignKey(d => d.IdVenta)
-                    .HasConstraintName("Fk_DetalleVenta_Refe_Venta");
             });
 
             modelBuilder.Entity<Inventario>(entity =>
@@ -175,17 +124,6 @@ namespace ecommerceApi.Context
                 entity.Property(e => e.Ruc)
                     .HasMaxLength(20)
                     .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<Ventum>(entity =>
-            {
-                entity.HasKey(e => e.IdVenta)
-                    .HasName("PK__Venta__BC1240BDC7C4C99C");
-
-                entity.Property(e => e.FechaVenta).HasColumnType("datetime");
-
-                entity.Property(e => e.UsuarioId).HasMaxLength(450);
-
             });
 
             OnModelCreatingPartial(modelBuilder);

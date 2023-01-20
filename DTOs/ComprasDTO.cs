@@ -7,6 +7,8 @@ namespace DTOs
         [Required]
         public int? IdProveedor { get; set; }
         [Required]
+        public int IdMetodoPago { get; set; }
+        [Required]
         public List<DetalleCompraDTO> Detalle {get; set;}
 
         public ComprasDTO()

@@ -9,10 +9,10 @@ namespace Services
     public class CategoriaServices
     {
         private Categorium _categoria;
-        private readonly RepositoryContext _context;
+        private readonly ContextDb _context;
         private readonly IMapper _mapper;
 
-        public CategoriaServices(RepositoryContext context, IMapper mapper)
+        public CategoriaServices(ContextDb context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

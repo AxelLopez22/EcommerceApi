@@ -8,18 +8,19 @@ namespace Services
 {
     public class CompraServices
     {
-        private readonly RepositoryContext _context;
+        //private readonly RepositoryContext _context;
+        private readonly ContextDb _contextDb;
         private readonly IMapper _mapper;
 
-        public CompraServices(RepositoryContext context, IMapper mapper)
+        public CompraServices(IMapper mapper, ContextDb contextDb)
         {
-            _context = context;
             _mapper = mapper;
+            _contextDb = contextDb;
         }   
 
         public async Task<ComprasDTO> CrearCompra(string IdUsuario, ComprasDTO model)
         {
-            var transaction = await _context.Database.BeginTransactionAsync();
+            var transaction = await _contextDb.Database.BeginTransactionAsync();
             try
             {
                 Compra compra = new Compra();
@@ -27,25 +28,26 @@ namespace Services
                 compra.UsuarioId = IdUsuario;
                 compra.Estado = true;
                 compra.FechaCompra = DateTime.Now;
+                compra.IdMetodoPago = model.IdMetodoPago;
                 compra.Total = model.Detalle.Sum(x => x.Precio * x.Cantidad);
-                await _context.Compras.AddAsync(compra);
-                await _context.SaveChangesAsync();
+                await _contextDb.Compras.AddAsync(compra);
+                await _contextDb.SaveChangesAsync();
 
                 foreach(var item in model.Detalle)
                 {
-                    var producto = await _context.Productos.Where(x => x.IdProductos == item.IdProducto)
+                    var producto = await _contextDb.Productos.Where(x => x.IdProductos == item.IdProducto)
                         .FirstOrDefaultAsync();
                     producto.Stock = producto.Stock + item.Cantidad;
-                    _context.Productos.Update(producto);
-                    await _context.SaveChangesAsync();
+                    _contextDb.Productos.Update(producto);
+                    await _contextDb.SaveChangesAsync();
 
                     DetalleCompra detalle = new DetalleCompra();
                     detalle.Cantidad = item.Cantidad;
                     detalle.Precio = item.Precio;
                     detalle.IdProducto = item.IdProducto;
                     detalle.IdCompra = compra.IdCompra;
-                    await _context.DetalleCompras.AddAsync(detalle);
-                    await _context.SaveChangesAsync();
+                    await _contextDb.DetalleCompras.AddAsync(detalle);
+                    await _contextDb.SaveChangesAsync();
                 }
                 await transaction.CommitAsync();
                 return _mapper.Map<ComprasDTO>(model);
@@ -61,21 +63,21 @@ namespace Services
         {
             try
             {
-                var Compra = await _context.Compras.Where(x => x.IdCompra == id && x.Estado == true)
+                var Compra = await _contextDb.Compras.Where(x => x.IdCompra == id && x.Estado == true)
                     .FirstOrDefaultAsync();
 
-                if(Compra == null){return false;}
+                if (Compra == null) { return false; }
 
                 Compra.Estado = false;
-                _context.Compras.Update(Compra);
-                await _context.SaveChangesAsync();
-                foreach(var item in Compra.DetalleCompras)
+                _contextDb.Compras.Update(Compra);
+                await _contextDb.SaveChangesAsync();
+                foreach (var item in Compra.DetalleCompras)
                 {
-                    var producto = await _context.Productos
+                    var producto = await _contextDb.Productos
                         .Where(x => x.IdProductos == item.IdProductoNavigation.IdProductos).FirstOrDefaultAsync();
                     producto.Stock = producto.Stock - item.Cantidad;
-                    _context.Productos.Update(producto);
-                    await _context.SaveChangesAsync();
+                    _contextDb.Productos.Update(producto);
+                    await _contextDb.SaveChangesAsync();
                 }
                 return true;
             } catch

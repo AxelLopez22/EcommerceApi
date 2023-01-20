@@ -1,6 +1,7 @@
 using AutoMapper;
 using Common.Extensions;
 using DTOs;
+using ecommerceApi.Common.Paginado;
 using ecommerceApi.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -18,10 +19,10 @@ namespace Controllers
         private readonly VentaServices _services;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public VentaController(RepositoryContext context, IMapper mapper, ILogger<VentaController> logger,
-        UserManager<IdentityUser> userManager)
+        public VentaController(IMapper mapper, ILogger<VentaController> logger,
+        UserManager<IdentityUser> userManager, ContextDb contextDb)
         {
-            _services = new VentaServices(context, mapper);
+            _services = new VentaServices(mapper, contextDb);
             _logger = logger;
             _userManager = userManager;
         }

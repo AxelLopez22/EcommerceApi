@@ -15,7 +15,7 @@ namespace Controllers
         private readonly CategoriaServices _services;
         private readonly ILogger<CategoriaController> _logger;
 
-        public CategoriaController(RepositoryContext context, IMapper mapper, ILogger<CategoriaController> logger)
+        public CategoriaController(ContextDb context, IMapper mapper, ILogger<CategoriaController> logger)
         {
             _services = new CategoriaServices(context, mapper);
             _logger = logger;
