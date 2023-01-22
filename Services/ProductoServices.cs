@@ -1,6 +1,8 @@
 using AutoMapper;
 using DTOs;
+using ecommerceApi.Common.Paginado;
 using ecommerceApi.Context;
+using ecommerceApi.DTOs;
 using ecommerceApi.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -115,7 +117,7 @@ namespace Services
             }
         }
 
-        public async Task<List<ProductoDTO>> GetProducts()
+        public async Task<List<ProductoDTO>> GetProducts(PaginacionDTO paginacion)
         {
             try
             {
@@ -130,7 +132,7 @@ namespace Services
                         ImagenUrl = s.ImagenUrl,
                         IdCategoria = s.IdCategoria,
                         NombreCategoria = s.IdCategoriaNavigation.Nombre
-                    }).ToListAsync();
+                    }).OrderBy(x => x.NombreProducto).Paginar(paginacion).ToListAsync();
                 
                 if(producto.Count == 0)
                 {

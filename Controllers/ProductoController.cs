@@ -1,6 +1,7 @@
 using AutoMapper;
 using DTOs;
 using ecommerceApi.Context;
+using ecommerceApi.DTOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,10 +25,10 @@ namespace Controllers
 
         [HttpGet]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetProducts()
+        public async Task<IActionResult> GetProducts([FromQuery] PaginacionDTO paginacion)
         {
             ModelRequest res = new ModelRequest();
-            var result = await _services.GetProducts();
+            var result = await _services.GetProducts(paginacion);
             if(result == null)
             {
                 _logger.LogError("No hay productos para mostrar");
@@ -84,7 +85,7 @@ namespace Controllers
                 _logger.LogError("Ocurrio un error al agregar producto");
                 res.status = "Error";
                 res.data = "Ocurrio un error al agregar el producto";
-                return BadRequest();
+                return BadRequest(res);
             }
             res.status = "Ok";
             res.data = "Producto agregado exitosamente";

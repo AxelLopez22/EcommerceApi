@@ -103,5 +103,22 @@ namespace Controllers
             return Ok(res);
         }
 
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> EliminarProveedor(int id)
+        {
+            ModelRequest res = new ModelRequest();
+            var result = await _services.DeleteProveedor(id);
+            if(result == false)
+            {
+                _logger.LogError("Ocurrio un error al eliminar proveedor");
+                res.status = "Error";
+                res.data = "Ocurrio un error al eliminar usuario";
+                return BadRequest(res);
+            }
+            res.status = "Ok";
+            res.data = "Eliminado con exito";
+            return Ok(res);
+        }
+
     }
 }

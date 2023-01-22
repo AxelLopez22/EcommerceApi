@@ -16,7 +16,7 @@ namespace Services
         public UsuariosServices(UserManager<IdentityUser> userManager, IConfiguration config, 
         SignInManager<IdentityUser> signInManager)
         {
-            _userManager = userManager;
+            _userManager = userManager; 
             _config = config;
             _signIngManager = signInManager;
         }
