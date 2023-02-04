@@ -23,4 +23,10 @@ namespace DTOs
         [Required]
         public string? Ruc { get; set; }
     }
+
+    public class SelectProveedorDTO
+    {
+        public int IdProveedor { get; set; }
+        public string Nombre { get; set;}
+    }
 }

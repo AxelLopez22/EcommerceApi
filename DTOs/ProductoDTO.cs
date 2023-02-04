@@ -29,4 +29,11 @@ namespace DTOs
         [Required]
         public int IdCategoria {get; set;}
     }
+
+    public class ViewProductoDTO
+    {
+        public int IdProducto { get; set; }
+        public string NombreProducto { get; set; }
+        public string Imagen { get; set; }
+    }
 }

@@ -23,6 +23,25 @@ namespace Services
             _httpContext = httpContext;
         }
 
+        public async Task<List<SelectProveedorDTO>> SelectProveedor()
+        {
+            try
+            {
+                var result = await _context.Proveedores.Where(x => x.Estado == true)
+                            .OrderBy(x => x.Nombre)
+                            .Select(s => new SelectProveedorDTO()
+                            {
+                                IdProveedor = s.IdProveedor,
+                                Nombre = s.Nombre
+                            }).ToListAsync();
+                return result;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public async Task<List<ProveedoresDTO>> GetProveedores(PaginacionDTO paginacion)
         {
             try

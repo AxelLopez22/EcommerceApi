@@ -24,6 +24,26 @@ namespace Services
             _http = http;
         }
 
+       public async Task<List<ViewProductoDTO>> ViewProductos()
+        {
+            try
+            {
+                var result = await _context.Productos.Where(x => x.Estado == true)
+                                    .OrderByDescending(x => x.IdProductos)
+                                    .Select(s => new ViewProductoDTO()
+                                    {
+                                        IdProducto = s.IdProductos,
+                                        NombreProducto = s.NombreProducto,
+                                        Imagen = s.ImagenUrl
+                                    }).ToListAsync();
+                return result;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public async Task<CreateProductoDTO> AddProduct(CreateProductoDTO model)
         {
             try

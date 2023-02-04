@@ -21,6 +21,23 @@ namespace Controllers
             _services = new ProveedoresServices(context, mapper, HttpContext);
         }
 
+        [HttpGet("selectProveedor")]
+        public async Task<IActionResult> SelectProveedor()
+        {
+            ModelRequest res = new ModelRequest();
+            var result = await _services.SelectProveedor();
+            if(result == null)
+            {
+                _logger.LogError("Error al mostrar proveedores");
+                res.status = "Error";
+                res.data = "Error al mostrar proveedores";
+                return BadRequest(res);
+            }
+            res.status = "Ok";
+            res.data = result;
+            return Ok(res);
+        }
+
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetIdAsync(int id)
         {

@@ -23,6 +23,24 @@ namespace Controllers
             _logger = logger;
         }
 
+
+        [HttpGet("viewProductos")]
+        public async Task<IActionResult> ViewProductos()
+        {
+            ModelRequest res = new ModelRequest();
+            var result = await _services.ViewProductos();
+            if(result == null)
+            {
+                _logger.LogError("Ocurrio un error a listar productos");
+                res.status = "Error";
+                res.data = "Ocurrio un error al mostrar productos";
+                return BadRequest(res);
+            }
+            res.status = "Ok";
+            res.data = result;
+            return Ok(res);
+        }
+
         [HttpGet]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetProducts([FromQuery] PaginacionDTO paginacion)
@@ -76,7 +94,7 @@ namespace Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct([FromQuery] CreateProductoDTO model)
+        public async Task<IActionResult> AddProduct([FromForm] CreateProductoDTO model)
         {
             ModelRequest res = new ModelRequest();
             var result = await _services.AddProduct(model);
@@ -92,8 +110,8 @@ namespace Controllers
             return Ok(res);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateProduct([FromQuery] int id,[FromQuery] CreateProductoDTO model)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateProduct(int id,[FromForm] CreateProductoDTO model)
         {
             ModelRequest res = new ModelRequest();
             var result = await _services.UpdateProducto(id, model);
