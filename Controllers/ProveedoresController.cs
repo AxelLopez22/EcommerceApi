@@ -5,6 +5,8 @@ using ecommerceApi.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Controllers
 {
@@ -73,6 +75,7 @@ namespace Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "Admin")]
         public async Task<IActionResult> AddProveedor(AgregarProveedoresDTO model)
         {
             ModelRequest res = new ModelRequest();
@@ -97,6 +100,7 @@ namespace Controllers
         }
 
         [HttpPut("{id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "Admin")]
         public async Task<IActionResult> UpdateProveedor(int id, AgregarProveedoresDTO model)
         {
             ModelRequest res = new ModelRequest();
@@ -121,6 +125,7 @@ namespace Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "Admin")]
         public async Task<IActionResult> EliminarProveedor(int id)
         {
             ModelRequest res = new ModelRequest();

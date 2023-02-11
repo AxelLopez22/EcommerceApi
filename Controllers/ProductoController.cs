@@ -42,7 +42,7 @@ namespace Controllers
         }
 
         [HttpGet]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetProducts([FromQuery] PaginacionDTO paginacion)
         {
             ModelRequest res = new ModelRequest();
@@ -94,6 +94,7 @@ namespace Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "Admin")]
         public async Task<IActionResult> AddProduct([FromForm] CreateProductoDTO model)
         {
             ModelRequest res = new ModelRequest();
@@ -111,6 +112,7 @@ namespace Controllers
         }
 
         [HttpPut("{id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "Admin")]
         public async Task<IActionResult> UpdateProduct(int id,[FromForm] CreateProductoDTO model)
         {
             ModelRequest res = new ModelRequest();
@@ -128,6 +130,7 @@ namespace Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "Admin")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             ModelRequest res = new ModelRequest();

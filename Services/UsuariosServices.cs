@@ -35,7 +35,7 @@ namespace Services
 
                 if(resultado.Succeeded)
                 {
-                    return ConstruirToken(model.NameUser);
+                    return await ConstruirToken(model.NameUser);
                 } else {
                     return (RespuestaAutenticacion)resultado.Errors;
                 }
@@ -55,7 +55,7 @@ namespace Services
                 
                 if(resultado.Succeeded)
                 {
-                    return ConstruirToken(model.NameUser);
+                    return await ConstruirToken(model.NameUser);
                 }
                 else
                 {
@@ -68,12 +68,17 @@ namespace Services
             }
         }
 
-        private RespuestaAutenticacion ConstruirToken(string UserName)
+        private async Task<RespuestaAutenticacion> ConstruirToken(string UserName)
         {
             var Claims = new List<Claim>()
             {
                 new Claim("Usuario", UserName)
             };
+
+            var usuario = await _userManager.FindByNameAsync(UserName);
+            var claimsDB = await _userManager.GetClaimsAsync(usuario);
+
+            Claims.AddRange(claimsDB);
 
             var llave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["LlaveJwt"]));
             var creds = new SigningCredentials(llave, SecurityAlgorithms.HmacSha256);
@@ -88,5 +93,34 @@ namespace Services
                 Expiracion = Expiracion
             };
         }
+
+        public async Task<bool> HacerAdmin(HacerAdminDTO model)
+        {
+            try
+            {
+                var usuario = await _userManager.FindByNameAsync(model.UserName);
+                await _userManager.AddClaimAsync(usuario, new Claim ("Admin", "1"));
+                return true;
+            }   
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> RemoverAdmin(HacerAdminDTO model)
+        {
+            try
+            {
+                var usuario = await _userManager.FindByNameAsync(model.UserName);
+                await _userManager.RemoveClaimAsync(usuario, new Claim("Admin", "1"));
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+             
     }
 }

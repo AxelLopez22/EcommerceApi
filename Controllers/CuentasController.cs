@@ -1,4 +1,6 @@
 using DTOs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Services;
@@ -50,6 +52,23 @@ namespace Controllers
             }
             res.status = "Ok";
             res.data = result;
+            return Ok(res);
+        }
+
+        [HttpPost("HacerAdmin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> HacerAdmin(HacerAdminDTO model)
+        {
+            ModelRequest res = new ModelRequest();
+            var result = await _servicesUser.HacerAdmin(model);
+            if(result == false)
+            {
+                res.status = "Error";
+                res.data = "Ocurrio un error al crear Admin";
+                return BadRequest(result);
+            }
+            res.status = "Ok";
+            res.data = "Admin creado";
             return Ok(res);
         }
     }

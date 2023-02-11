@@ -56,6 +56,7 @@ namespace Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> AnularCompra(int id)
         {
             ModelRequest res = new ModelRequest();

@@ -22,4 +22,10 @@ namespace DTOs
         [Required]
         public string Password {get; set;}
     }
+
+    public class HacerAdminDTO
+    {
+        [Required]
+        public string UserName { get; set;}
+    }
 }

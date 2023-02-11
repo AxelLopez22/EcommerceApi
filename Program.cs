@@ -44,6 +44,11 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ContextDb>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireClaim("Admin"));
+});
+
 //Configuracion de AutoMapper
 var mapperConfigure = new MapperConfiguration(mc => 
 {
