@@ -92,5 +92,24 @@ namespace ecommerceApi.Services
                 return null;
             }
         }
+
+        public async Task<bool> EliminarProductoCarrito(string IdUsuario, int IdProducto)
+        {
+            try
+            {
+                var producto = await _context.Carritos.Where(x => x.IdUsuario == IdUsuario && x.IdProducto == IdProducto).FirstOrDefaultAsync();
+                if (producto == null)
+                {
+                    return false;
+                }
+                _context.Carritos.Remove(producto);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

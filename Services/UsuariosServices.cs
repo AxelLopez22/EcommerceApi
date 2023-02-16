@@ -84,7 +84,7 @@ namespace Services
             var creds = new SigningCredentials(llave, SecurityAlgorithms.HmacSha256);
 
             var Expiracion = DateTime.UtcNow.AddHours(1);
-            var securityToken = new JwtSecurityToken(issuer: "localhost", audience: "localhost", claims: Claims,
+            var securityToken = new JwtSecurityToken(issuer: "appadminecommerce.azurewebsites.net", audience: "appadminecommerce.azurewebsites.net", claims: Claims,
                 expires: Expiracion, signingCredentials: creds);
 
             return new RespuestaAutenticacion()

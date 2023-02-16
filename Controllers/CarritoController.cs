@@ -96,5 +96,28 @@ namespace ecommerceApi.Controllers
             res.data = result;
             return Ok(res);
         }
+
+        [HttpDelete("{IdProducto:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> EliminarProductoCarrito(int IdProducto)
+        {
+            var UserClaim = HttpContext.User.Claims.Where(claim => claim.Type == "Usuario").FirstOrDefault();
+            var user = UserClaim.Value;
+            var Usuario = await _userManager.FindByNameAsync(user);
+            var IdUsuario = Usuario.Id;
+
+            ModelRequest res = new ModelRequest();
+            var result = await _carritoServices.EliminarProductoCarrito(IdUsuario, IdProducto);
+            if(result == false)
+            {
+                _logger.LogError("Error al eliminar producto del carrito");
+                res.status = "Error";
+                res.data = "Ocurrio un error al elimnar el producto del carrito";
+                return BadRequest(res);
+            }
+            res.status = "Ok";
+            res.data = "Eliminado con exito";
+            return Ok(res);
+        }
     }
 }
